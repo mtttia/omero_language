@@ -1,0 +1,1 @@
+{"version":3,"file":"ParseIf.js","sourceRoot":"","sources":["../../../src/compiler/Parser/ParseIf.ts"],"names":[],"mappings":";;;AACA,2CAAwC;AAExC,MAAa,OAAQ,SAAQ,qBAAS;IAMlC,YAAY,SAAyB,EAAE,SAAsB,EAAE,UAAuB;QAElF,KAAK,EAAE,CAAA;QACP,IAAI,CAAC,SAAS,GAAG,SAAS,CAAA;QAC1B,IAAI,CAAC,SAAS,GAAG,SAAS,CAAA;QAC1B,IAAI,CAAC,UAAU,GAAG,UAAU,CAAA;IAChC,CAAC;CACJ;AAbD,0BAaC"}

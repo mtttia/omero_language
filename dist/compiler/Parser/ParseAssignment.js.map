@@ -1,0 +1,1 @@
+{"version":3,"file":"ParseAssignment.js","sourceRoot":"","sources":["../../../src/compiler/Parser/ParseAssignment.ts"],"names":[],"mappings":";;;AACA,2CAAwC;AAExC,MAAa,eAAgB,SAAQ,qBAAS;IAM1C,YAAY,QAAgB,EAAE,OAAqB;QAE/C,KAAK,EAAE,CAAA;QACP,IAAI,CAAC,QAAQ,GAAG,QAAQ,CAAC;QACzB,IAAI,CAAC,OAAO,GAAG,OAAO,CAAC;IAC3B,CAAC;CACJ;AAZD,0CAYC"}
