@@ -15,7 +15,7 @@ Proposal Afrodite
     Omero: Here the on true code
 Proposal Atena
     Omero: Here the on false code
-Troia Destruction
+Troia Destructionn
 
 Titanomachy
     Titanomachy Or Loose
