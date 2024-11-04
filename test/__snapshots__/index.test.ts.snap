@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Simple program compile to JS 1`] = `
+"let Ade = null;let Afrodite = null;let Apollo = null;let Ares = null;let Artemide = null;let Atena = null;let Demetra = null;let Dioniso = null;let Efesto = null;let Era = null;let Ermes = null;let Poseidone = null;let Zeus = null;let args = [1, 2]
+Ares = args[0]  
+Zeus = (((30 + 40) - 10) * 10) / 5
+Apollo = Ares  
+
+if(  ((Zeus  ) > (Apollo  ))){}else{}
+
+while( ! (  ((Zeus  ) > ((args[1] + 5) - Apollo)) && ! ((Zeus  ) == (Ares  ))) ||  ((Zeus  ) >= (10  ))){}
+console.log(Zeus  )
+console.log(String.fromCharCode(Zeus  ))"
+`;
+
+exports[`Simple program compile to JS with \\r\\n 1`] = `
+"let Ade = null;let Afrodite = null;let Apollo = null;let Ares = null;let Artemide = null;let Atena = null;let Demetra = null;let Dioniso = null;let Efesto = null;let Era = null;let Ermes = null;let Poseidone = null;let Zeus = null;let args = [1, 2]
+Ares = args[0]  
+Zeus = (((30 + 40) - 10) * 10) / 5
+Apollo = Ares  
+
+if(  ((Zeus  ) > (Apollo  ))){}else{}
+
+while( ! (  ((Zeus  ) > ((args[1] + 5) - Apollo)) && ! ((Zeus  ) == (Ares  ))) ||  ((Zeus  ) >= (10  ))){}
+console.log(Zeus  )
+console.log(String.fromCharCode(Zeus  ))"
+`;

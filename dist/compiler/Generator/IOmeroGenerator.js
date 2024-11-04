@@ -1,16 +1,13 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.IOmeroGenerator = void 0;
-const ParseAssignment_1 = require("../Parser/ParseAssignment");
-const ParseComparison_1 = require("../Parser/ParseComparison");
-const ParseCondition_1 = require("../Parser/ParseCondition");
-const ParseEmpty_1 = require("../Parser/ParseEmpty");
-const ParseIf_1 = require("../Parser/ParseIf");
-const ParseLoop_1 = require("../Parser/ParseLoop");
-const ParseOperand_1 = require("../Parser/ParseOperand");
-const ParseOracle_1 = require("../Parser/ParseOracle");
-const ParsePrint_1 = require("../Parser/ParsePrint");
-class IOmeroGenerator {
+import { ParseAssignment } from "../Parser/ParseAssignment";
+import { ParseComparison } from "../Parser/ParseComparison";
+import { ParseCondition } from "../Parser/ParseCondition";
+import { ParseEmpty } from "../Parser/ParseEmpty";
+import { ParseIf } from "../Parser/ParseIf";
+import { ParseLoop } from "../Parser/ParseLoop";
+import { ParseOperand } from "../Parser/ParseOperand";
+import { ParseOracle } from "../Parser/ParseOracle";
+import { ParsePrint } from "../Parser/ParsePrint";
+export class IOmeroGenerator {
     constructor(compileOptions) {
         this.argsVariableName = "args";
         this.compileOptions = compileOptions;
@@ -20,35 +17,34 @@ class IOmeroGenerator {
     }
     generate(parses) {
         return parses.map(p => {
-            if (p instanceof ParseAssignment_1.ParseAssignment) {
+            if (p instanceof ParseAssignment) {
                 return this.generateAssignment(p);
             }
-            else if (p instanceof ParseComparison_1.ParseComparison) {
+            else if (p instanceof ParseComparison) {
                 return this.generateComparison(p);
             }
-            else if (p instanceof ParseCondition_1.ParseCondition) {
+            else if (p instanceof ParseCondition) {
                 return this.generateCondition(p);
             }
-            else if (p instanceof ParseEmpty_1.ParseEmpty) {
+            else if (p instanceof ParseEmpty) {
                 return this.generateEmpty(p);
             }
-            else if (p instanceof ParseIf_1.ParseIf) {
+            else if (p instanceof ParseIf) {
                 return this.generateIf(p);
             }
-            else if (p instanceof ParseLoop_1.ParseLoop) {
+            else if (p instanceof ParseLoop) {
                 return this.generateLoop(p);
             }
-            else if (p instanceof ParseOperand_1.ParseOperand) {
+            else if (p instanceof ParseOperand) {
                 return this.generateOperand(p);
             }
-            else if (p instanceof ParseOracle_1.ParseOracle) {
+            else if (p instanceof ParseOracle) {
                 return this.generateOracle(p);
             }
-            else if (p instanceof ParsePrint_1.ParsePrint) {
+            else if (p instanceof ParsePrint) {
                 return this.generatePrint(p);
             }
         }).join("\n");
     }
 }
-exports.IOmeroGenerator = IOmeroGenerator;
 //# sourceMappingURL=IOmeroGenerator.js.map

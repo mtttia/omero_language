@@ -1,9 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ParseComparison = void 0;
-const tokens_1 = require("../Lexer/tokens");
-const ParseType_1 = require("./ParseType");
-class ParseComparison extends ParseType_1.ParseType {
+import { keyWords } from "../Lexer/tokens";
+import { ParseType } from "./ParseType";
+export class ParseComparison extends ParseType {
     constructor(operandLeft, operation, operandRight) {
         super();
         this.operandLeft = operandLeft;
@@ -11,15 +8,14 @@ class ParseComparison extends ParseType_1.ParseType {
         this.operation = operation;
     }
     parseOperation() {
-        if (this.operation == tokens_1.keyWords.greaterThan)
+        if (this.operation == keyWords.greaterThan)
             return " > ";
-        else if (this.operation == tokens_1.keyWords.greaterOrEqualTo)
+        else if (this.operation == keyWords.greaterOrEqualTo)
             return " >= ";
-        else if (this.operation == tokens_1.keyWords.equalTo)
+        else if (this.operation == keyWords.equalTo)
             return " == ";
         else
             throw new Error("Unexpected Token");
     }
 }
-exports.ParseComparison = ParseComparison;
 //# sourceMappingURL=ParseComparison.js.map

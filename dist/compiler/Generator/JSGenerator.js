@@ -1,16 +1,13 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.JSGenerator = void 0;
-const tokens_1 = require("../Lexer/tokens");
-const ParseComparison_1 = require("../Parser/ParseComparison");
-const ParseCondition_1 = require("../Parser/ParseCondition");
-const ParseOperand_1 = require("../Parser/ParseOperand");
-const ParseOracle_1 = require("../Parser/ParseOracle");
-const ParsePrint_1 = require("../Parser/ParsePrint");
-const IOmeroGenerator_1 = require("./IOmeroGenerator");
-class JSGenerator extends IOmeroGenerator_1.IOmeroGenerator {
+import { keyWords, registers } from "../Lexer/tokens";
+import { ParseComparison } from "../Parser/ParseComparison";
+import { ComparisonType, ParseCondition } from "../Parser/ParseCondition";
+import { ParseOperand } from "../Parser/ParseOperand";
+import { ParseOracle } from "../Parser/ParseOracle";
+import { PrintType } from "../Parser/ParsePrint";
+import { IOmeroGenerator } from "./IOmeroGenerator";
+export class JSGenerator extends IOmeroGenerator {
     generateHeader() {
-        return tokens_1.registers.map(r => `let ${r} = null;`).join("") + this.getArguments();
+        return registers.map(r => `let ${r} = null;`).join("") + this.getArguments();
     }
     getArguments() {
         if (this.compileOptions.useInputArgs) {
@@ -26,13 +23,13 @@ class JSGenerator extends IOmeroGenerator_1.IOmeroGenerator {
     generateComparison(parse) {
         let operation = "";
         switch (parse.operation) {
-            case tokens_1.keyWords.greaterThan:
+            case keyWords.greaterThan:
                 operation = ">";
                 break;
-            case tokens_1.keyWords.greaterOrEqualTo:
+            case keyWords.greaterOrEqualTo:
                 operation = ">=";
                 break;
-            case tokens_1.keyWords.equalTo:
+            case keyWords.equalTo:
                 operation = "==";
         }
         return `(${this.generateOperand(parse.operandLeft)}) ${operation} (${this.generateOperand(parse.operandRight)})`;
@@ -42,18 +39,18 @@ class JSGenerator extends IOmeroGenerator_1.IOmeroGenerator {
         return parse.comparisons.map(c => {
             let type = "";
             switch (c.type) {
-                case ParseCondition_1.ComparisonType.and:
+                case ComparisonType.and:
                     type = first ? "" : "&&";
                     break;
-                case ParseCondition_1.ComparisonType.or:
+                case ComparisonType.or:
                     type = first ? "" : "||";
                     break;
             }
             let condition = "";
-            if (c.condition instanceof ParseCondition_1.ParseCondition) {
+            if (c.condition instanceof ParseCondition) {
                 condition = this.generateCondition(c.condition);
             }
-            else if (c.condition instanceof ParseComparison_1.ParseComparison) {
+            else if (c.condition instanceof ParseComparison) {
                 condition = this.generateComparison(c.condition);
             }
             if (first) {
@@ -73,20 +70,20 @@ class JSGenerator extends IOmeroGenerator_1.IOmeroGenerator {
     }
     generateOperand(parse) {
         let left = "";
-        if (parse.left instanceof ParseOracle_1.ParseOracle) {
+        if (parse.left instanceof ParseOracle) {
             left = this.generateOracle(parse.left);
         }
-        else if (parse.left instanceof ParseOperand_1.ParseOperand) {
+        else if (parse.left instanceof ParseOperand) {
             left = `(${this.generateOperand(parse.left)})`;
         }
         else {
             left = parse.left;
         }
         let right = "";
-        if (parse.right instanceof ParseOracle_1.ParseOracle) {
+        if (parse.right instanceof ParseOracle) {
             right = this.generateOracle(parse.right);
         }
-        else if (parse.right instanceof ParseOperand_1.ParseOperand) {
+        else if (parse.right instanceof ParseOperand) {
             right = `(${this.generateOperand(parse.right)})`;
         }
         else {
@@ -94,16 +91,16 @@ class JSGenerator extends IOmeroGenerator_1.IOmeroGenerator {
         }
         let operand = "";
         switch (parse.operand) {
-            case tokens_1.keyWords.plus:
+            case keyWords.plus:
                 operand = "+";
                 break;
-            case tokens_1.keyWords.minus:
+            case keyWords.minus:
                 operand = "-";
                 break;
-            case tokens_1.keyWords.times:
+            case keyWords.times:
                 operand = "*";
                 break;
-            case tokens_1.keyWords.division:
+            case keyWords.division:
                 operand = "/";
                 break;
         }
@@ -115,15 +112,14 @@ class JSGenerator extends IOmeroGenerator_1.IOmeroGenerator {
     generatePrint(parse) {
         let print = "";
         switch (parse.printType) {
-            case ParsePrint_1.PrintType.number:
+            case PrintType.number:
                 print = this.generateOperand(parse.operand);
                 break;
-            case ParsePrint_1.PrintType.string:
+            case PrintType.string:
                 print = `String.fromCharCode(${this.generateOperand(parse.operand)})`;
                 break;
         }
         return `console.log(${print})`;
     }
 }
-exports.JSGenerator = JSGenerator;
 //# sourceMappingURL=JSGenerator.js.map

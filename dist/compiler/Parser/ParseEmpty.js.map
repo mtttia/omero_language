@@ -1,1 +1,1 @@
-{"version":3,"file":"ParseEmpty.js","sourceRoot":"","sources":["../../../src/compiler/Parser/ParseEmpty.ts"],"names":[],"mappings":";;;AAAA,2CAAwC;AAExC,MAAa,UAAW,SAAQ,qBAAS;CAExC;AAFD,gCAEC"}
+{"version":3,"file":"ParseEmpty.js","sourceRoot":"","sources":["../../../src/compiler/Parser/ParseEmpty.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,SAAS,EAAE,MAAM,aAAa,CAAC;AAExC,MAAM,OAAO,UAAW,SAAQ,SAAS;CAExC"}

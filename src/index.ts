@@ -16,12 +16,3 @@ export function compileToJs(code: string, options: ICompileOptions): string
 
     return generated
 }
-
-/**
- * Compile Options example
- * 
- * const defaultOptions: ICompileOptions = {
- *     arguments: ["1"],
- *     useInputArgs: false
- * }
- */

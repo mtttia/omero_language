@@ -1,20 +1,17 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Parser = void 0;
-const tokens_1 = require("./Lexer/tokens");
-const ParseAssignment_1 = require("./Parser/ParseAssignment");
-const ParseComparison_1 = require("./Parser/ParseComparison");
-const ParseCondition_1 = require("./Parser/ParseCondition");
-const ParseOperand_1 = require("./Parser/ParseOperand");
-const ParseIf_1 = require("./Parser/ParseIf");
-const ParseEmpty_1 = require("./Parser/ParseEmpty");
-const ParseLoop_1 = require("./Parser/ParseLoop");
-const ParsePrint_1 = require("./Parser/ParsePrint");
-const ParseOracle_1 = require("./Parser/ParseOracle");
-class Parser {
+import { keyWords, TokenType } from "./Lexer/tokens";
+import { ParseAssignment } from "./Parser/ParseAssignment";
+import { ParseComparison } from "./Parser/ParseComparison";
+import { ComparisonType, ParseCondition } from "./Parser/ParseCondition";
+import { ParseOperand } from "./Parser/ParseOperand";
+import { ParseIf } from "./Parser/ParseIf";
+import { ParseEmpty } from "./Parser/ParseEmpty";
+import { ParseLoop } from "./Parser/ParseLoop";
+import { ParsePrint, PrintType } from "./Parser/ParsePrint";
+import { ParseOracle } from "./Parser/ParseOracle";
+export class Parser {
     constructor(tokens) {
         this.currentCondition = null;
-        this.tokens = tokens.filter(t => t.type != tokens_1.TokenType.commandEnd);
+        this.tokens = tokens.filter(t => t.type != TokenType.commandEnd);
         this.position = 0;
     }
     parse() {
@@ -43,15 +40,15 @@ class Parser {
         return false;
     }
     matchOperation() {
-        return this.match(tokens_1.TokenType.keyWorld, tokens_1.keyWords.plus) ||
-            this.match(tokens_1.TokenType.keyWorld, tokens_1.keyWords.minus) ||
-            this.match(tokens_1.TokenType.keyWorld, tokens_1.keyWords.times) ||
-            this.match(tokens_1.TokenType.keyWorld, tokens_1.keyWords.division);
+        return this.match(TokenType.keyWorld, keyWords.plus) ||
+            this.match(TokenType.keyWorld, keyWords.minus) ||
+            this.match(TokenType.keyWorld, keyWords.times) ||
+            this.match(TokenType.keyWorld, keyWords.division);
     }
     matchComparisonOperator() {
-        return this.match(tokens_1.TokenType.keyWorld, tokens_1.keyWords.greaterOrEqualTo) ||
-            this.match(tokens_1.TokenType.keyWorld, tokens_1.keyWords.greaterThan) ||
-            this.match(tokens_1.TokenType.keyWorld, tokens_1.keyWords.equalTo);
+        return this.match(TokenType.keyWorld, keyWords.greaterOrEqualTo) ||
+            this.match(TokenType.keyWorld, keyWords.greaterThan) ||
+            this.match(TokenType.keyWorld, keyWords.equalTo);
     }
     assert(tokenType, tokenValue = null) {
         if (!this.match(tokenType, tokenValue)) {
@@ -70,59 +67,59 @@ class Parser {
         return new Error("Unexpected token");
     }
     parseStatement() {
-        if (this.match(tokens_1.TokenType.keyWorld, tokens_1.keyWords.variableAssignment)) {
+        if (this.match(TokenType.keyWorld, keyWords.variableAssignment)) {
             this.consume();
             return this.parseVariableAssignment();
         }
-        else if (this.match(tokens_1.TokenType.keyWorld, tokens_1.keyWords.comparison)) {
+        else if (this.match(TokenType.keyWorld, keyWords.comparison)) {
             this.consume();
             //consume the type, only support and for first one
             this.getConditionType();
             let negate = false;
-            if (this.match(tokens_1.TokenType.keyWorld, tokens_1.keyWords.notStatement)) {
+            if (this.match(TokenType.keyWorld, keyWords.notStatement)) {
                 this.consume();
                 negate = true;
             }
             const comparison = this.parseComparison();
-            this.currentCondition = new ParseCondition_1.ParseCondition();
-            this.currentCondition.addComparison(comparison, ParseCondition_1.ComparisonType.and, negate);
-            return new ParseEmpty_1.ParseEmpty();
+            this.currentCondition = new ParseCondition();
+            this.currentCondition.addComparison(comparison, ComparisonType.and, negate);
+            return new ParseEmpty();
         }
-        else if (this.match(tokens_1.TokenType.keyWorld, tokens_1.keyWords.condition)) {
+        else if (this.match(TokenType.keyWorld, keyWords.condition)) {
             this.consume();
             //consume the type, only support and for first one
             this.getConditionType();
             this.currentCondition = this.parseCondition();
-            return new ParseEmpty_1.ParseEmpty();
+            return new ParseEmpty();
         }
-        else if (this.match(tokens_1.TokenType.keyWorld, tokens_1.keyWords.ifStatement)) {
+        else if (this.match(TokenType.keyWorld, keyWords.ifStatement)) {
             this.consume();
             return this.parseIfStatement();
         }
-        else if (this.match(tokens_1.TokenType.keyWorld, tokens_1.keyWords.comment)) {
+        else if (this.match(TokenType.keyWorld, keyWords.comment)) {
             this.consume();
             return this.parseComment();
         }
-        else if (this.match(tokens_1.TokenType.keyWorld, tokens_1.keyWords.loopStatement)) {
+        else if (this.match(TokenType.keyWorld, keyWords.loopStatement)) {
             this.consume();
             return this.parseLoop();
         }
-        else if (this.match(tokens_1.TokenType.keyWorld, tokens_1.keyWords.printNumber)) {
+        else if (this.match(TokenType.keyWorld, keyWords.printNumber)) {
             this.consume();
-            return this.parsePrint(ParsePrint_1.PrintType.number);
+            return this.parsePrint(PrintType.number);
         }
-        else if (this.match(tokens_1.TokenType.keyWorld, tokens_1.keyWords.printChar)) {
+        else if (this.match(TokenType.keyWorld, keyWords.printChar)) {
             this.consume();
-            return this.parsePrint(ParsePrint_1.PrintType.string);
+            return this.parsePrint(PrintType.string);
         }
         else {
             throw this.unexecutedToken();
         }
     }
     parseVariableAssignment() {
-        const registerName = this.assert(tokens_1.TokenType.register).value;
-        this.assert(tokens_1.TokenType.keyWorld, tokens_1.keyWords.valueAssignment);
-        return new ParseAssignment_1.ParseAssignment(registerName, this.parseOperand());
+        const registerName = this.assert(TokenType.register).value;
+        this.assert(TokenType.keyWorld, keyWords.valueAssignment);
+        return new ParseAssignment(registerName, this.parseOperand());
     }
     parseComparison() {
         let operandLeft = this.parseOperand();
@@ -134,27 +131,27 @@ class Parser {
             throw this.unexecutedToken();
         }
         let operandRight = this.parseOperand();
-        const comparison = new ParseComparison_1.ParseComparison(operandLeft, comparisonOp, operandRight);
+        const comparison = new ParseComparison(operandLeft, comparisonOp, operandRight);
         return comparison;
     }
     parseCondition() {
-        const condition = new ParseCondition_1.ParseCondition();
-        while (!this.match(tokens_1.TokenType.keyWorld, tokens_1.keyWords.conditionEnd)) {
-            if (this.match(tokens_1.TokenType.keyWorld, tokens_1.keyWords.condition)) {
+        const condition = new ParseCondition();
+        while (!this.match(TokenType.keyWorld, keyWords.conditionEnd)) {
+            if (this.match(TokenType.keyWorld, keyWords.condition)) {
                 this.consume();
                 const type = this.getConditionType();
                 let negate = false;
-                if (this.match(tokens_1.TokenType.keyWorld, tokens_1.keyWords.notStatement)) {
+                if (this.match(TokenType.keyWorld, keyWords.notStatement)) {
                     this.consume();
                     negate = true;
                 }
                 condition.addComparison(this.parseCondition(), type, negate);
             }
-            else if (this.match(tokens_1.TokenType.keyWorld, tokens_1.keyWords.comparison)) {
+            else if (this.match(TokenType.keyWorld, keyWords.comparison)) {
                 this.consume();
                 const type = this.getConditionType();
                 let negate = false;
-                if (this.match(tokens_1.TokenType.keyWorld, tokens_1.keyWords.notStatement)) {
+                if (this.match(TokenType.keyWorld, keyWords.notStatement)) {
                     this.consume();
                     negate = true;
                 }
@@ -173,12 +170,12 @@ class Parser {
             throw this.unexecutedToken();
         }
         this.currentCondition = null;
-        this.assert(tokens_1.TokenType.keyWorld, tokens_1.keyWords.ifTrue);
+        this.assert(TokenType.keyWorld, keyWords.ifTrue);
         const ifTrueBlock = [];
         const ifFalseBlock = [];
         let processTrue = true;
-        while (!this.match(tokens_1.TokenType.keyWorld, tokens_1.keyWords.ifEnd)) {
-            if (this.match(tokens_1.TokenType.keyWorld, tokens_1.keyWords.ifFalse)) {
+        while (!this.match(TokenType.keyWorld, keyWords.ifEnd)) {
+            if (this.match(TokenType.keyWorld, keyWords.ifFalse)) {
                 processTrue = false;
                 this.consume();
                 continue;
@@ -191,11 +188,11 @@ class Parser {
             }
         }
         this.consume();
-        const parse = new ParseIf_1.ParseIf(condition, ifTrueBlock, ifFalseBlock);
+        const parse = new ParseIf(condition, ifTrueBlock, ifFalseBlock);
         return parse;
     }
     parseComment() {
-        return new ParseEmpty_1.ParseEmpty();
+        return new ParseEmpty();
     }
     parseLoop() {
         const condition = this.currentCondition;
@@ -204,41 +201,41 @@ class Parser {
         }
         this.currentCondition = null;
         const block = [];
-        while (!this.match(tokens_1.TokenType.keyWorld, tokens_1.keyWords.loopEnd)) {
+        while (!this.match(TokenType.keyWorld, keyWords.loopEnd)) {
             block.push(this.parseStatement());
         }
         this.consume();
-        const parse = new ParseLoop_1.ParseLoop(condition, block);
+        const parse = new ParseLoop(condition, block);
         return parse;
     }
     parsePrint(type) {
         const operation = this.parseOperand();
-        return new ParsePrint_1.ParsePrint(operation, type);
+        return new ParsePrint(operation, type);
     }
     getConditionType() {
-        let type = ParseCondition_1.ComparisonType.and;
-        if (this.match(tokens_1.TokenType.keyWorld, tokens_1.keyWords.orStatement)) {
+        let type = ComparisonType.and;
+        if (this.match(TokenType.keyWorld, keyWords.orStatement)) {
             this.consume();
-            type = ParseCondition_1.ComparisonType.or;
+            type = ComparisonType.or;
         }
         return type;
     }
     parseOperand() {
         //manage first operand
         let left = "";
-        if (this.match(tokens_1.TokenType.bracketOpen)) {
+        if (this.match(TokenType.bracketOpen)) {
             this.consume();
             left = this.parseOperand();
-            this.assert(tokens_1.TokenType.bracketClose);
+            this.assert(TokenType.bracketClose);
         }
         else {
-            if (this.match(tokens_1.TokenType.register) || this.match(tokens_1.TokenType.number)) {
+            if (this.match(TokenType.register) || this.match(TokenType.number)) {
                 left = this.consume().value;
             }
-            else if (this.match(tokens_1.TokenType.keyWorld, tokens_1.keyWords.args)) {
+            else if (this.match(TokenType.keyWorld, keyWords.args)) {
                 this.consume();
-                if (this.match(tokens_1.TokenType.register) || this.match(tokens_1.TokenType.number)) {
-                    left = new ParseOracle_1.ParseOracle(this.consume().value);
+                if (this.match(TokenType.register) || this.match(TokenType.number)) {
+                    left = new ParseOracle(this.consume().value);
                 }
                 else {
                     throw this.unexecutedToken();
@@ -248,7 +245,7 @@ class Parser {
                 throw this.unexecutedToken();
             }
         }
-        const type = new ParseOperand_1.ParseOperand(left);
+        const type = new ParseOperand(left);
         let operand;
         let right;
         if (this.matchOperation()) {
@@ -257,18 +254,18 @@ class Parser {
         else {
             return type;
         }
-        if (this.match(tokens_1.TokenType.bracketOpen)) {
+        if (this.match(TokenType.bracketOpen)) {
             this.consume();
             right = this.parseOperand();
         }
         else {
-            if (this.match(tokens_1.TokenType.register) || this.match(tokens_1.TokenType.number)) {
+            if (this.match(TokenType.register) || this.match(TokenType.number)) {
                 right = this.consume().value;
             }
-            else if (this.match(tokens_1.TokenType.keyWorld, tokens_1.keyWords.args)) {
+            else if (this.match(TokenType.keyWorld, keyWords.args)) {
                 this.consume();
-                if (this.match(tokens_1.TokenType.register) || this.match(tokens_1.TokenType.number)) {
-                    right = new ParseOracle_1.ParseOracle(this.consume().value);
+                if (this.match(TokenType.register) || this.match(TokenType.number)) {
+                    right = new ParseOracle(this.consume().value);
                 }
                 else {
                     throw this.unexecutedToken();
@@ -282,5 +279,4 @@ class Parser {
         return type;
     }
 }
-exports.Parser = Parser;
 //# sourceMappingURL=Parser.js.map

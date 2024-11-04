@@ -1,0 +1,34 @@
+import { Token } from "./Lexer";
+import { TokenType } from "./Lexer/tokens";
+import { ParseComparison } from "./Parser/ParseComparison";
+import { ComparisonType, ParseCondition } from "./Parser/ParseCondition";
+import { ParseOperand } from "./Parser/ParseOperand";
+import { ParseType } from "./Parser/ParseType";
+import { ParseIf } from "./Parser/ParseIf";
+import { ParseEmpty } from "./Parser/ParseEmpty";
+import { ParseLoop } from "./Parser/ParseLoop";
+import { ParsePrint, PrintType } from "./Parser/ParsePrint";
+export declare class Parser {
+    private tokens;
+    private position;
+    private currentCondition;
+    constructor(tokens: Token[]);
+    parse(): ParseType[];
+    peek(): Token;
+    consume(): Token;
+    match(tokenType: TokenType, tokenValue?: string | null): boolean;
+    matchOperation(): boolean;
+    matchComparisonOperator(): boolean;
+    assert(tokenType: TokenType, tokenValue?: string | null): Token;
+    unexecutedToken(): Error;
+    parseStatement(): ParseType;
+    parseVariableAssignment(): ParseType;
+    parseComparison(): ParseComparison;
+    parseCondition(): ParseCondition;
+    parseIfStatement(): ParseIf;
+    parseComment(): ParseEmpty;
+    parseLoop(): ParseLoop;
+    parsePrint(type: PrintType): ParsePrint;
+    getConditionType(): ComparisonType;
+    parseOperand(): ParseOperand;
+}

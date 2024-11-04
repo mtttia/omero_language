@@ -1,5 +1,7 @@
 import { keyWords, registers, TokenType } from "./Lexer/tokens"
 
+const spacingChars = [" ", "\n", "\r"]
+
 export interface Token
 {
     type: TokenType,
@@ -30,18 +32,8 @@ export class Lexer
         {
             let char = this.input[this.position];
 
-            if (char === ' ')
+            if (spacingChars.includes(char))
             {
-                this.position++;
-                continue;
-            }
-
-            if (char === '\n')
-            {
-                this.tokens.push({
-                    type: TokenType.commandEnd,
-                    value: char
-                });
                 this.position++;
                 continue;
             }
@@ -90,7 +82,7 @@ export class Lexer
                 this.position++;
                 if (this.keyWords.includes(value))
                 {
-                    if (this.input[this.position] == "\n" || this.input[this.position] == " ")
+                    if (spacingChars.includes(this.input[this.position]))
                     {
                         found = true;
                         if (value == keyWords.comment)
@@ -112,7 +104,7 @@ export class Lexer
                 }
                 else if (this.registers.includes(value))
                 {
-                    if (this.input[this.position] == "\n" || this.input[this.position] == " ")
+                    if (spacingChars.includes(this.input[this.position]))
                     {
                         found = true;
                         this.tokens.push({

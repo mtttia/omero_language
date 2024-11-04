@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.TokenType = exports.registers = exports.keyWords = void 0;
-exports.keyWords = {
+export const keyWords = {
     variableAssignment: "My dear GOD",
     valueAssignment: "you are now",
     args: "Oracle prophecy",
@@ -27,10 +24,10 @@ exports.keyWords = {
     greaterOrEqualTo: "Fight with",
     equalTo: "Die both with",
 };
-exports.registers = [
+export const registers = [
     "Ade", "Afrodite", "Apollo", "Ares", "Artemide", "Atena", "Demetra", "Dioniso", "Efesto", "Era", "Ermes", "Poseidone", "Zeus"
 ];
-var TokenType;
+export var TokenType;
 (function (TokenType) {
     TokenType[TokenType["keyWorld"] = 0] = "keyWorld";
     TokenType[TokenType["register"] = 1] = "register";
@@ -38,5 +35,5 @@ var TokenType;
     TokenType[TokenType["bracketOpen"] = 3] = "bracketOpen";
     TokenType[TokenType["bracketClose"] = 4] = "bracketClose";
     TokenType[TokenType["number"] = 5] = "number";
-})(TokenType || (exports.TokenType = TokenType = {}));
+})(TokenType || (TokenType = {}));
 //# sourceMappingURL=tokens.js.map
